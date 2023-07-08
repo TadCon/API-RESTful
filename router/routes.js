@@ -1,18 +1,15 @@
 import express from "express";
 import UserController from "../controller/userController.js";
 
-class UserRoutes {
-  constructor() {
-    this.userController = new UserController();
-    this.router = express.Router();
-  }
+export default class Router {
+    constructor() {
+      this.router = express.Router();
+      this.userCcontroller = new UserController();
+    }
 
-  start() {
-    this.router.get("/", this.userController.getAllUsers);
-    // Agrega más rutas según tus necesidades
+    start() {
+    this.router.get("/", this.userCcontroller.getUsers);
 
     return this.router;
-  }
+    }
 }
-
-export default UserRoutes;

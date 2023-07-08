@@ -1,10 +1,12 @@
-import User from '../database/userModel.js';
+import User from "../database/userModel.js";
 
-class UserService {
-  // Obtener todos los usuarios de la base de datos
-  async getAllUsers() {
-    return await User.find({});
+export default class UserService {
+  constructor() {
+    this.model = User;
+  }
+
+  getUsers = async() =>  {
+    const users = await this.model.find()
+    return users;
   }
 }
-
-export default UserService;

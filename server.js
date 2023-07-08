@@ -1,25 +1,43 @@
 import express from "express";
 import cors from "cors";
-import UserRoutes from "./router/routes.js";
 
-const app = express();
-const PORT = 3000;
+import Router from "./router/routes.js";
+import DBConnection from "./database/DBConnection.js";
 
-const userRoutes = new UserRoutes();
+export default class Server {
+  constructor() {
+    this.app = express();
+    this.port = 8080;
+    this.router = new Router();
+  }
 
-app.use(express.static("public"));
-app.use(express.json());
+  async start() {
+    /* EXPRESS CONFIG */
+    this.app.use(express.json());
+    this.app.use(express.urlencoded({ extended: true }));
+    this.app.use(cors());
 
-// Configuración de CORS
-app.use(cors());
+    /* ROUTES */
+    this.app.use("/api/users", this.router.start());
 
-// Configuración de rutas
-app.use("/api/users", userRoutes.start());
+    /* DBConnection conectar */
+    await DBConnection.connectDB();
 
-// Inicio del servidor
-const server = app.listen(PORT, () =>
-  console.log(`Servidor express escuchando en http://localhost:${PORT}`)
-);
-server.on("error", (error) =>
-  console.log("Error con el servidor express:", error)
-);
+    /* SERVER */
+    this.server = this.app.listen(this.port, () =>
+      console.log(
+        `Servidor http express escuchando en http://localhost:${this.port}`
+      )
+    );
+
+    this.server.on("error", (error) =>
+      console.log(`Error en el servidor: ${error.message}`)
+    );
+
+    return this.app;
+  }
+
+  stop() {
+    this.server.close();
+  }
+}

@@ -1,20 +1,17 @@
 import UserService from "../service/userService.js";
 
-class UserController {
+export default class UserController {
   constructor() {
     this.userService = new UserService();
   }
 
-  // Controlador para obtener todos los usuarios
-  async getAllUsers(req, res) {
+  getUsers = async (req, res) => {
     try {
-      const users = await this.userService.getAllUsers();
+      const users = await this.userService.getUsers();
       res.json(users);
     } catch (error) {
       console.error("Error al obtener los usuarios:", error);
       res.status(500).send("Error en el servidor");
     }
-  }
+  };
 }
-
-export default UserController;

@@ -1,12 +1,21 @@
 /**
  * This function validates that the object is not empty.
- * @param {Object} req - Request from the server
- * @param {Object} res - Response from the server
+ * @param {Object} object - Object to validate.
+ * @throws {Error} Throws an error if the object is empty.
  */
-export function validateObjectKeys(req, res) {
-  if (Object.keys(req.body).length < 1) {
-    return res.status(400).send("Empty object", req.body);
+export function validateObjectKeys(object) {
+  if (Object.keys(object).length < 1) {
+    throw new Error("Error: invalid object, missing keys");
   }
 }
 
-// TODO - Test function
+/**
+ * This function validates that the object is not null.
+ * @param {Object} object - Object to validate.
+ * @throws {Error} Throws an error if the object is null.
+ */
+export function validateObject(object) {
+    if (!object) {
+      throw new Error("Error: null object");
+    }
+  }

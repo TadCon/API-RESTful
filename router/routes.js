@@ -13,12 +13,13 @@ export default class Router {
     this.router.get("/", this.controller.getAll);
 
     /* POST */
-    this.router.post("/", this.controller.createUser);
+    this.router.post("/", this.controller.create);
 
     /* UPDATE */
-    this.router.put("/:id", this.controller.updateUser);
-
+    this.router.put("/:id", this.controller.update);
+    
     /* DELETE */
+    this.router.delete("/:id", this.controller.deleteById);
 
     return this.router;
     }

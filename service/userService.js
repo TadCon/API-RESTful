@@ -1,12 +1,29 @@
 import User from "../database/userModel.js";
 
-export default class UserService {
+export default class Service {
   constructor() {
     this.model = User;
   }
 
-  getUsers = async() =>  {
-    const users = await this.model.find()
-    return users;
-  }
+  getAll = async () => {
+    return await this.model.find();
+  };
+
+  getById = async (id) => {
+    return await this.model.findById(id);
+  };
+
+  create = async (object) => {
+    return await this.model.create(object);
+  };
+
+  update = async (id, object) => {
+    return await this.model.findByIdAndUpdate(id, object, {
+      new: true,
+    });
+  };
+
+  deleteById = async (id) => {
+    return await this.model.findByIdAndDelete(id);
+  };
 }

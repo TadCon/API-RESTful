@@ -15,8 +15,17 @@ export default class Service {
     return await this.model.findById(id);
   };
 
+  getByName = async (object) => {
+    validateObject(object);
+    return await this.model.findOne({ name: object.name });
+  };
+
   create = async (object) => {
     validateObjectKeys(object);
+    console.log(this.getByName(object));
+/*     if (await getByName(object)) {
+      throw new Error("User already exists");
+    } */
     return await this.model.create(object);
   };
 

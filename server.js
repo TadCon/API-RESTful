@@ -19,13 +19,13 @@ export default class Server {
     this.app.use(cors());
 
     /* PASSPORT CONFIG */
-    this.app.use(passport.initialize());
-    this.app.use(passport.session());
+/*     this.app.use(passport.initialize());
+    this.app.use(passport.session()); */
 
     /* ROUTES */
     this.app.use("/api/users", this.router.start());
 
-    /* DBConnection conectar */
+    /* DB CONNECTION  */
     await DBConnection.connectDB();
 
     /* SERVER */
@@ -42,7 +42,8 @@ export default class Server {
     return this.app;
   }
 
-  stop() {
+  async stop() {
     this.server.close();
+    await DBConnection.disconnectDB();
   }
 }

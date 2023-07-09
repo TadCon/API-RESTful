@@ -1,17 +1,48 @@
-import passport from 'passport';
-import { Strategy as LocalStrategy } from 'passport-local';
+import passport from "passport";
+import { Strategy as LocalStrategy } from "passport-local";
+import User from "./database/userModel.js";
 
-passport.use(new LocalStrategy(
-  { usernameField: 'nombre' },
-  (nombre, contraseña, done) => {
-  }
-));
+passport.use(
+  "signup",
+  new LocalStrategy(
+    { usernameField: "name", passwordField: "password" },
+    async (name, password, done) => {
+      try {
+        const user = await User.create({ name, password });
+        return done(null, user);
+      } catch (error) {
+        return done(error);
+      }
+    }
+  )
+);
 
-passport.serializeUser((usuario, done) => {
-  done(null, usuario.id);
-});
+passport.use(
+  "login",
+  new LocalStrategy(
+    { usernameField: "name", passwordField: "password" },
+    async (name, password, done) => {
+      try {
+        const user = await User.findOne({ name });
+        if (!user) {
+          return done(null, false, {
+            message: "Incorrect username or password",
+          });
+        }
 
-passport.deserializeUser((id, done) => {
-});
+        const validate = await user.isValidPassword(password);
+        if (!validate) {
+          return done(null, false, {
+            message: "Incorrect username or password",
+          });
+        }
+
+        return done(null, user, { message: "Login successful" });
+      } catch (error) {
+        return done(error);
+      }
+    }
+  )
+);
 
 export default passport;

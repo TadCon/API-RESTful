@@ -1,15 +1,17 @@
 import express from "express";
 import cors from "cors";
-import passport from "./passport-config.js";
 
 import Router from "./router/routes.js";
+import Auth from "./router/authRoutes.js";
 import DBConnection from "./database/DBConnection.js";
+
 
 export default class Server {
   constructor() {
     this.app = express();
     this.port = 8080;
     this.router = new Router();
+    this.auth = new Auth();
   }
 
   async start() {
@@ -24,6 +26,7 @@ export default class Server {
 
     /* ROUTES */
     this.app.use("/api/users", this.router.start());
+    this.app.use("/api/users", this.auth.start());
 
     /* DB CONNECTION  */
     await DBConnection.connectDB();

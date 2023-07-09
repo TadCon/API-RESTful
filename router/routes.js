@@ -2,13 +2,13 @@ import express from "express";
 import UserController from "../controller/userController.js";
 
 export default class Router {
-    constructor() {
-      this.router = express.Router();
-      this.controller = new UserController();
-    }
+  constructor() {
+    this.router = express.Router();
+    this.controller = new UserController();
+  }
 
-    start() {
-      /* GET */
+  start() {
+    /* GET */
     this.router.get("/:id", this.controller.getById);
     this.router.get("/", this.controller.getAll);
 
@@ -17,10 +17,10 @@ export default class Router {
 
     /* UPDATE */
     this.router.put("/:id", this.controller.update);
-    
+
     /* DELETE */
     this.router.delete("/:id", this.controller.deleteById);
 
     return this.router;
-    }
+  }
 }

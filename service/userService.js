@@ -22,10 +22,10 @@ export default class Service {
 
   create = async (object) => {
     validateObjectKeys(object);
-    console.log(this.getByName(object));
-/*     if (await getByName(object)) {
+    const objectDuplicated = await this.getByName(object)
+    if (objectDuplicated) {
       throw new Error("User already exists");
-    } */
+    }
     return await this.model.create(object);
   };
 

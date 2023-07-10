@@ -13,7 +13,7 @@ export default class Router {
     this.router.get("/", this.controller.getAll);
 
     /* POST */
-    this.router.post("/", this.controller.create);
+    /* this.router.post("/", this.controller.create); */
 
     /* UPDATE */
     this.router.put("/:id", this.controller.update);

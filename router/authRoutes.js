@@ -1,6 +1,6 @@
 import express from "express";
 import UserController from "../controller/userController.js";
-import passport from "../passport-config.js";
+import passport from "../Authentication/passport-config.js";
 import jwt from "jsonwebtoken";
 
 export default class Auth {
@@ -10,31 +10,37 @@ export default class Auth {
   }
 
   start() {
-    /* POST */
+    /* SIGNUP */
     this.router.post(
       "/signup",
       passport.authenticate("signup", { session: false }),
       async (req, res) => {
-        res.json({
+        res.status(200).json({
           message: "Signup successful",
           user: req.user,
         });
       }
     );
+
+    /* LOGIN */
     this.router.post("/login", async (req, res, next) => {
       passport.authenticate("login", async (err, user, info) => {
         try {
           if (err || !user) {
-            const error = new Error("Invalid " + user);
-            return next(error);
+            return res
+              .status(401)
+              .json({ error: "Authentication failed, invalid credentials" });
           }
           req.login(user, { session: false }, async (err) => {
             if (err) {
               return next(err);
             }
             const body = { _id: user._id, name: user.name };
-            const token = jwt.sign({ user: body }, "top_secret"); //TODO - revisar clave de jwt
-            return res.json({ token });
+            const token = jwt.sign({ user: body }, process.env.AUTH); //Generate token
+            res.cookie("token", token, {
+              httpOnly: true,
+            }); //Set cookie with token
+            return res.status(200).json({ token });
           });
         } catch (e) {
           return next(e);

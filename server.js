@@ -1,5 +1,8 @@
 import express from "express";
 import cors from "cors";
+import 'dotenv/config';
+import cookieParser from "cookie-parser";
+
 
 import Router from "./router/routes.js";
 import Auth from "./router/authRoutes.js";
@@ -19,10 +22,7 @@ export default class Server {
     this.app.use(express.json());
     this.app.use(express.urlencoded({ extended: true }));
     this.app.use(cors());
-
-    /* PASSPORT CONFIG */
-/*     this.app.use(passport.initialize());
-    this.app.use(passport.session()); */
+    this.app.use(cookieParser());
 
     /* ROUTES */
     this.app.use("/api/users", this.router.start());

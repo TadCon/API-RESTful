@@ -1,6 +1,10 @@
 import passport from "passport";
 import { Strategy as LocalStrategy } from "passport-local";
-import User from "./database/userModel.js";
+import UserService from "../Service/userService.js";
+
+//TODO - Considerar que passport sea una clase
+
+const userService = new UserService();
 
 passport.use(
   "signup",
@@ -8,7 +12,8 @@ passport.use(
     { usernameField: "name", passwordField: "password" },
     async (name, password, done) => {
       try {
-        const user = await User.create({ name, password });
+        const user = await userService.create({ name, password });
+
         return done(null, user);
       } catch (error) {
         return done(error);
@@ -23,7 +28,7 @@ passport.use(
     { usernameField: "name", passwordField: "password" },
     async (name, password, done) => {
       try {
-        const user = await User.findOne({ name });
+        const user = await userService.getByName({ name });
         if (!user) {
           return done(null, false, {
             message: "Incorrect username or password",

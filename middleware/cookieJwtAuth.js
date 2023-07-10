@@ -7,14 +7,13 @@ import jwt from "jsonwebtoken";
 const cookieJwtAuth = (req, res, next) => {
   const token = req.cookies.token;
   if (!token) {
-    res.send("acá")
     return res.redirect("/login");  }
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const decoded = jwt.verify(token, process.env.AUTH);
     req.user = decoded;
     next();
   } catch (err) {
-    res.send("acá 2")
+    console.log(err);
     res.clearCookie("token");
     res.redirect("/login");
   }

@@ -36,7 +36,7 @@ export default class Auth {
               return next(err);
             }
             const body = { _id: user._id, name: user.name };
-            const token = jwt.sign({ user: body }, process.env.AUTH); //Generate token
+            const token = jwt.sign({ user: body }, process.env.AUTH, { expiresIn: "7d"}); //Generate token
             res.cookie("token", token, {
               httpOnly: true,
             }); //Set cookie with token

@@ -13,7 +13,7 @@ export default class Router {
     this.router.get("/", this.controller.getAll);
 
     /* POST */
-    /* this.router.post("/", this.controller.create); */
+    //NOTE - user creation must be done through the authentication layer
 
     /* UPDATE */
     this.router.put("/:id", this.controller.update);

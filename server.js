@@ -1,18 +1,18 @@
 import express from "express";
 import cors from "cors";
-import 'dotenv/config';
+import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
-
+import cookieJwtAuth from "./middleware/cookieJwtAuth.js";
 
 import Router from "./router/routes.js";
 import Auth from "./router/authRoutes.js";
 import DBConnection from "./database/DBConnection.js";
 
-
 export default class Server {
   constructor() {
+    dotenv.config();
     this.app = express();
-    this.port = 8080;
+    this.port = process.env.PORT || 3000;
     this.router = new Router();
     this.auth = new Auth();
   }
@@ -25,8 +25,10 @@ export default class Server {
     this.app.use(cookieParser());
 
     /* ROUTES */
-    this.app.use("/api/users", this.router.start());
-    this.app.use("/api/users", this.auth.start());
+    this.app.use("/api/users", cookieJwtAuth, this.router.start());
+    this.app.use("/", this.auth.start());
+
+
 
     /* DB CONNECTION  */
     await DBConnection.connectDB();

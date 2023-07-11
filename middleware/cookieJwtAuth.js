@@ -2,12 +2,13 @@ import jwt from "jsonwebtoken";
 
 /**
  * This function validates that the user token is valid
- * @returns 
+ * @returns
  */
 const cookieJwtAuth = (req, res, next) => {
   const token = req.cookies.token;
   if (!token) {
-    return res.redirect("/login");  }
+    return res.redirect("/login");
+  }
   try {
     const decoded = jwt.verify(token, process.env.AUTH);
     req.user = decoded;

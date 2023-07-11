@@ -5,7 +5,7 @@ import jwt from "jsonwebtoken";
  * @returns
  */
 const cookieJwtAuth = (req, res, next) => {
-  const token = req.cookies.token;
+  const token = req.cookies[process.env.COOKIE];
   if (!token) {
     return res.redirect("/login");
   }
@@ -15,7 +15,7 @@ const cookieJwtAuth = (req, res, next) => {
     next();
   } catch (err) {
     console.log(err);
-    res.clearCookie("token");
+    res.clearCookie(process.env.COOKIE);
     res.redirect("/login");
   }
 };

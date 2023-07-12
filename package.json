@@ -1,8 +1,8 @@
 {
   "type": "module",
-  "name": "prueba-backend",
+  "name": "api-restful",
   "version": "1.0.0",
-  "description": "",
+  "description": "Developed by Tadeo Converso",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
